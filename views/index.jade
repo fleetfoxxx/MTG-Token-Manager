@@ -36,14 +36,17 @@ html
 
 script(type="text/ng-template" id="/home.html")
    div(ng-controller="CardSearchCtrl as ctrl")
-      form(ng-submit="testCardSearch()")
+      form(ng-submit="cardSearch()")
          .form-group
             angucomplete-alt(
                id="cardNameInput"
                placeholder="Card Name"
                pause="100"
-               selected-object="ctrl.selectedItem"
-               remote-url="https://api.deckbrew.com/mtg/cards/typeahead?q="
+               selected-object="selectedItem"
+               local-data="tokenArray"               
                title-field="name"
-               minlength="3")
+               search-fields="name"
+               minlength="0"
+               input-changed="inputChanged")
          button.btn.btn-default(type="submit") Search
+      img(ng-src="{{picURL}}")
