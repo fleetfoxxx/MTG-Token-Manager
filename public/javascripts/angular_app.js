@@ -47,13 +47,16 @@ app.controller('NavCtrl', ['$scope', function($scope){
 }]);
 
 app.controller('CardSearchCtrl', ['$scope', 'tokens', function($scope, tokens){
+   $scope.selectedTokenArray = [];
+
    tokens.getAll().then(function(res){
       $scope.tokenArray = res.data;
    });
 
    $scope.cardSearch = function(){
       if (!$scope.selectedItem || $scope.selectedItem === '') {return;}
-      $scope.picURL = $scope.selectedItem.originalObject.mtgSet[0].picURL;
+      $scope.selectedTokenArray.push($scope.selectedItem.originalObject);
+      $scope.$broadcast('angucomplete-alt:clearInput', 'cardNameInput');
    }
 
    $scope.inputChanged = function(str){
@@ -64,4 +67,20 @@ app.controller('CardSearchCtrl', ['$scope', 'tokens', function($scope, tokens){
          });
       }   
    }
+
+   $scope.tokenClick = function($event){
+      $($event.target).toggleClass('token-tapped');      
+   }
 }]);
+
+app.directive('backImg', function(){
+    return function(scope, element, attrs){
+        var url = attrs.backImg;
+        element.css({
+            'background-image': 'url(' + url +')',
+            'background-size' : 'contain',
+            'background-position' : 'center',
+            'background-repeat' : 'no-repeat'
+        });
+    };
+});
